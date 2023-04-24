@@ -7,10 +7,25 @@ const handleFactory =require('./handlerFactory')
 const Product =require('../models/productModel')
 
 const AppError =require('../utils/appError')
-const catchAsync =require('../utils/catchAsync')
+const catchAsync =require('../utils/catchAsync');
+const User = require('../models/userModel');
 
 exports.getAllProducts = handleFactory.getAll(Product);
-exports.addProduct =handleFactory.createOne(Product);
+exports.addProduct =catchAsync(async (req, res, next) => {
+  const product = await Product.create(req.body);
+
+  //Updating user info
+  const user =await User.findById(req.user.id);
+  user.products.push(product._id);
+  await user.save({validateBeforeSave:false})
+  
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: product
+    }
+  });
+});
 exports.getOneProduct =handleFactory.getOne(Product);
 exports.updateOneProduct=handleFactory.updateOne(Product);
 exports.deleteOneProduct=handleFactory.deleteOne(Product);

@@ -23,7 +23,6 @@ const categoryController =require('../controllers/categoryController')
  *     summary: Add a new category
  *     security:
  *       - bearerAuth: []
- *     parameters:
  *     requestBody:
  *       required: true
  *       content:
@@ -138,9 +137,18 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *       required: true
  *       content:
  *         application/json:
- *           example:
- *             name: Updated Category
- *             description: This is an updated category
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: New name of the category
+ *               description:
+ *                 type: string
+ *                 description: New description of the category
+ *             example:
+ *               name: Updated Category
+ *               description: This is an updated category
  *     responses:
  *       200:
  *         description: OK
@@ -150,7 +158,9 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *         description: Category not found
  *       500:
  *         description: Internal server error
+ * 
  */
+
 
 .patch(authController.protect,categoryController.updateCategory)
 
@@ -174,8 +184,8 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *     produces:
  *       - application/json
  *     responses:
- *       200:
- *         description: OK
+ *       204:
+ *         description: Deleted
  *       400:
  *         description: Bad request
  *       404:
@@ -291,6 +301,11 @@ router.route('/').post(
  *         required: false
  *         type: string
  *         example: 60f6c64d7f268409a8ae1c23
+ *       - in: query
+ *         name: author
+ *         description: In order to take a look someones products
+ *         type: string
+ *         example: 64449ea1af0dc4015117a7e4
  *     responses:
  *       200:
  *         description: OK
@@ -428,8 +443,8 @@ router.route('/:id').get(productController.getOneProduct)
  *     produces:
  *       - application/json
  *     responses:
- *       200:
- *         description: OK
+ *       204:
+ *         description: Deleted
  *       400:
  *         description: Bad request
  *       404:

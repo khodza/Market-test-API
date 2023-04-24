@@ -1,4 +1,2 @@
 /node_modules
 config.env
-/public/users/*.jpeg
-/public/products/*.jpeg
