@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
     select: false
   },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }],
+  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'orders' }],
 });
 
 userSchema.pre('save', async function(next) {
