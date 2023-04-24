@@ -54,8 +54,10 @@ exports.addOrder = catchAsync(async (req, res) => {
   });
 
   
+  exports.getMyOrders =catchAsync(async(req,res,next)=>{
+    req.query = {...req.query, ...{user: req.user.id}};
+    next();
+  })
 exports.getAllOrders =handleFactory.getAll(Order);
 exports.getOrder =handleFactory.getOne(Order);
 exports.deleteOrder =handleFactory.deleteOne(Order);
-
-// exports.getMyOrders

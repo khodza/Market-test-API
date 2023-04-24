@@ -24,12 +24,6 @@ const categoryController =require('../controllers/categoryController')
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     requestBody:
  *       required: true
  *       content:
@@ -73,10 +67,6 @@ router.route('/categories').post(authController.protect,validateMiddleware(valid
  *         description: OK
  *       500:
  *         description: Internal server error
- *     security:
- *       - bearerAuth: []
- *       - basicAuth: []
- *       - apiKey: []
  * definitions:
  *   Category:
  *     type: object
@@ -104,8 +94,6 @@ router.route('/categories').post(authController.protect,validateMiddleware(valid
  *     tags:
  *       - Categories
  *     summary: Get a single category
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -126,7 +114,7 @@ router.route('/categories').post(authController.protect,validateMiddleware(valid
  */
 
 router.route('/categories/:id').get(categoryController.getCategory)
-
+                                                //UPDATE CATEGORY BY ID
 /**
  * @swagger
  * /api/v1/products/categories/{id}:
@@ -144,12 +132,6 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *         schema:
  *           type: string
  *           example: 6155d5a5a90113004477fb30
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     produces:
  *       - application/json
  *     requestBody:
@@ -189,12 +171,6 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *         required: true
  *         schema:
  *           type: string
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     produces:
  *       - application/json
  *     responses:
@@ -220,13 +196,6 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *     summary: Add a new product
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     requestBody:
  *       required: true
  *       content:
@@ -263,6 +232,7 @@ router.route('/categories/:id').get(categoryController.getCategory)
  *               - price
  *               - category
  *               - image
+ *               - quantity
  *     produces:
  *       - application/json
  *     responses:
@@ -383,12 +353,6 @@ router.route('/:id').get(productController.getOneProduct)
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       - in: path
  *         name: id
  *         description: ID of the product to update
@@ -455,12 +419,6 @@ router.route('/:id').get(productController.getOneProduct)
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       - in: path
  *         name: id
  *         description: ID of the product to be deleted

@@ -23,22 +23,34 @@ router.use(authController.protect);
  *     summary: Get the currently logged-in user's profile
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: OK
- *         content: User
  *       401:
  *         description: Unauthorized
  *       404:
  *         description: Not Found
  *     operationId: getCurrentUser
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   components:
+ *     schemas:
+ *       User:
+ *         type: object
+ *         properties:
+ *           id:
+ *             type: integer
+ *           name:
+ *             type: string
+ *           email:
+ *             type: string
+ *         example:
+ *           id: 123
+ *           name: John Doe
+ *           email: john.doe@example.com
  */
 
 router.get('/me',userController.getMe,userController.getUser);
@@ -49,28 +61,24 @@ router.get('/me',userController.getMe,userController.getUser);
  *   patch:
  *     tags:
  *       - Current User 
- *     summary: Update the currently logged-in users password
+ *     summary: Update the currently logged-in user's password
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
- *       - name: password
- *         in: body
- *         description: new password
- *         required: true
- *         type: string
- *         example: new password
- *       - name: passwordCurrent
- *         in: body
- *         description: current password
- *         required: true
- *         type: string
- *         example: oldpassword1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: New password
+ *                 example: newpassword
+ *               passwordCurrent:
+ *                 type: string
+ *                 description: Current password
+ *                 example: oldpassword1
  *     responses:
  *       200:
  *         description: OK
@@ -81,7 +89,12 @@ router.get('/me',userController.getMe,userController.getUser);
  *       404:
  *         description: Not Found
  */
-router.patch('/updateMyPassword',usersSchemaDto.updateCurrentUserPassword,catchValidatedReq ,authController.updatePassword);
+
+router.patch('/updateMyPassword',
+// usersSchemaDto.updateCurrentUserPassword,
+// catchValidatedReq ,
+authController.updatePassword);
+
                             //UPDATE CURRENT USER
 /**
  * @swagger
@@ -89,16 +102,9 @@ router.patch('/updateMyPassword',usersSchemaDto.updateCurrentUserPassword,catchV
  *   patch:
  *     tags:
  *       - Current User
- *     summary: Update a product by ID
+ *     summary: Update the currently logged-in user's profile
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     requestBody:
  *       required: false
  *       content:
@@ -108,17 +114,18 @@ router.patch('/updateMyPassword',usersSchemaDto.updateCurrentUserPassword,catchV
  *             properties:
  *               username:
  *                 type: string
- *                 description: new username
+ *                 description: New username
  *               email:
- *                 type: email
- *                 description: new email
+ *                 type: string
+ *                 format: email
+ *                 description: New email
  *               image:
  *                 type: string
  *                 format: binary
  *                 description: Photo of the user
- *             example:
- *               username: Updated username
- *               email: This is an updated email
+ *           example:
+ *             username: Updated username
+ *             email: example@example.com
  *     produces:
  *       - application/json
  *     responses:
@@ -127,10 +134,11 @@ router.patch('/updateMyPassword',usersSchemaDto.updateCurrentUserPassword,catchV
  *       400:
  *         description: Bad request
  *       404:
- *         description: Product not found
+ *         description: Not Found
  *       500:
  *         description: Internal server error
  */
+
 
 router.patch(
   '/updateMe',
@@ -151,13 +159,6 @@ userController.updateMe
  *     summary: Delete the currently logged-in user's account
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       204:
  *         description: No Content
@@ -168,7 +169,7 @@ userController.updateMe
  *     operationId: deleteCurrentUser
  */
 
-router.delete('/deleteMe', userController.deleteMe);
+router.delete('/me', userController.deleteMe);
 
                                     //USERS
                                     //GET ALL USERS
@@ -181,13 +182,6 @@ router.delete('/deleteMe', userController.deleteMe);
  *     summary: Get all users
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: OK
@@ -213,12 +207,6 @@ router
  *         description: ID of the user to retrieve
  *         required: true
  *         type: string
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: OK
@@ -249,12 +237,6 @@ router
  *         description: ID of the user to retrieve
  *         required: true
  *         type: string
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: OK
@@ -279,12 +261,6 @@ router
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       - name: userId
  *         in: path
  *         description: ID of the user to update
@@ -338,12 +314,6 @@ router
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: Authorization
- *         in: header
- *         description: JWT token obtained after logging in
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       - name: id
  *         in: path
  *         description: ID of the user to delete

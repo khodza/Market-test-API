@@ -2,7 +2,7 @@ const { body } = require('express-validator');
                                 //USERS DTOS
 const updateCurrentUserDto = [
     body('username').optional(),
-    body('email').optional().isEmail(),
+    body('email').optional().isEmail().withMessage('Provide valid email'),
     body('password').custom((value, { req }) => {
       if ('password' in req.body) {
         throw new Error('Password field is not allowed');

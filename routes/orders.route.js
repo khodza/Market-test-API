@@ -8,9 +8,44 @@ const authController =require('../controllers/authController')
 const orderController =require('../controllers/orderController')
 
                                         //ORDERS
+                                    //GET MY ORDERS
+/**
+ * @swagger
+ * /api/v1/orders/myorders:
+ *   get:
+ *     tags:
+ *       - Orders
+ *     summary: Get all orders of currently loggedin user
+ *     description: Returns all orders of currently loggedin user
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: OK
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ *   securityDefinitions:
+ *     bearerAuth:
+ *       type: apiKey
+ *       name: Authorization
+ *       in: header
+ *   definitions:
+ *     Order:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         status:
+ *           type: string
+ *         total:
+ *           type: number
+ */
+router.route('/myorders').get(authController.protect,orderController.getMyOrders,orderController.getAllOrders)
                                     //GET ALL ORDERS
-
-
 /**
  * @swagger
  * /api/v1/orders:
@@ -23,13 +58,6 @@ const orderController =require('../controllers/orderController')
  *       - application/json
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: OK
@@ -37,8 +65,9 @@ const orderController =require('../controllers/orderController')
  *         description: Unauthorized
  *       500:
  *         description: Internal server error
- */
+*/
 router.route('/').get(authController.protect,orderController.getAllOrders)
+                                                //ADD ORDER
 
 /**
  * @swagger
@@ -52,13 +81,6 @@ router.route('/').get(authController.protect,orderController.getAllOrders)
  *       - application/json
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     requestBody:
  *       required: true
  *       content:
@@ -94,7 +116,6 @@ router.route('/').get(authController.protect,orderController.getAllOrders)
  *       500:
  *         description: Internal server error
  */
-                                        //ADD ORDER
 .post(authController.protect,orderController.addOrder)
 
                                         //GET ORDER BY ID
@@ -145,12 +166,6 @@ router.route('/:id').get(authController.protect,orderController.getOrder)
  *         schema:
  *           type: string
  *         description: ID of the order to update
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     requestBody:
  *       required: true
  *       content:
@@ -168,10 +183,6 @@ router.route('/:id').get(authController.protect,orderController.getOrder)
  *     responses:
  *       200:
  *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Order'
  *       400:
  *         description: Bad request
  *       401:
@@ -194,12 +205,6 @@ router.route('/:id').get(authController.protect,orderController.getOrder)
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: JWT token obtained after logging in. Pass the token in the format `Bearer <token>`.
- *         required: true
- *         type: string
- *         example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       - in: path
  *         name: id
  *         description: ID of the order to delete
@@ -218,7 +223,6 @@ router.route('/:id').get(authController.protect,orderController.getOrder)
  */
 
 .delete(authController.protect,orderController.deleteOrder)
-                                        //GET MY ORDERS
-// router('/myorder',authController.protect,orderController.getMyOrders)
+
 
 module.exports =router;

@@ -19,9 +19,9 @@ const options = {
         },
       },
     },
-    security: [{
-      bearerAuth: [],
-    }],
+    // security: [{
+    //   bearerAuth: [],
+    // }],
   },
   apis: ['./routes/*.js'], // Path to the API routes folder
 };
